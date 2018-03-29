@@ -44,7 +44,8 @@ namespace PIMPMyRepos
 
     private void RemoveButton_Click(object sender, EventArgs e)
     {
-      RepoListListbox.Items.Remove(RepoListListbox.Items[RepoListListbox.SelectedIndex]);
+      if(RepoListListbox.Items.Count > 0)
+        RepoListListbox.Items.Remove(RepoListListbox.Items[RepoListListbox.SelectedIndex]);
     }
   }
 }

@@ -1,6 +1,5 @@
 ﻿using PIMPMyRepos.Properties;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -9,9 +8,7 @@ namespace PIMPMyRepos
   class TrayApplicationContext : ApplicationContext
   {
     private NotifyIcon trayIcon;
-    private System.Threading.Thread mainThread;
-
-    bool doMainLoop = true;
+    private System.Windows.Forms.Timer pullTimer;
 
     public TrayApplicationContext()
     {
@@ -28,10 +25,16 @@ namespace PIMPMyRepos
 
       UpdateTrayStatus();
 
-      // Init main thread
-      mainThread = new Thread(new ThreadStart(MainLoop));
-
+      InitTimer();
+      
       TestRepos();
+    }
+
+    public void InitTimer()
+    {
+      pullTimer = new System.Windows.Forms.Timer();
+      pullTimer.Tick += new EventHandler(MainLoop);
+      pullTimer.Interval = Properties.Settings.Default.PullInterval * 1000; // in miliseconds
     }
 
     void UpdateTrayStatus()
@@ -47,43 +50,35 @@ namespace PIMPMyRepos
       {
         ManageRepos(null, null);
       }
-
-      mainThread.Start();
+      pullTimer.Start();
     }
 
-    // mainLoop
-    void MainLoop()
+    void MainLoop(object sender, EventArgs e)
     {
       UpdateTrayStatus();
 
-      while (doMainLoop)
+      PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
+
+      var notification = new System.Windows.Forms.NotifyIcon()
       {
-        // do this action every PullInterval seconds
-        Thread.Sleep(Properties.Settings.Default.PullInterval * 1000);
+        Visible = true,
+        Icon = System.Drawing.SystemIcons.Information,
+        BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info,
+        BalloonTipTitle = "Pulling into repos",
+        BalloonTipText = String.Format("Nr of repos being pulled into: {0}", settings.repoCount.ToString()),
+      };
 
-        PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
+      // Display for 5 seconds.
+      notification.ShowBalloonTip(5000);
 
-        var notification = new System.Windows.Forms.NotifyIcon()
-        {
-          Visible = true,
-          Icon = System.Drawing.SystemIcons.Information,
-          BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info,
-          BalloonTipTitle = "Pulling into repos",
-          BalloonTipText = String.Format("Nr of repos being pulled into: {0}", settings.repoCount.ToString()),
-        };
+      // This will let the balloon close after it's 5 second timeout
+      // for demonstration purposes. Comment this out to see what happens
+      // when dispose is called while a balloon is still visible.
+      Thread.Sleep(6000);
 
-        // Display for 5 seconds.
-        notification.ShowBalloonTip(5000);
-
-        // This will let the balloon close after it's 5 second timeout
-        // for demonstration purposes. Comment this out to see what happens
-        // when dispose is called while a balloon is still visible.
-        Thread.Sleep(10000);
-
-        // The notification should be disposed when you don't need it anymore,
-        // but doing so will immediately close the balloon if it's visible.
-        notification.Dispose();
-      }
+      // The notification should be disposed when you don't need it anymore,
+      // but doing so will immediately close the balloon if it's visible.
+      notification.Dispose();
     }
 
     void ManageRepos(object sender, EventArgs e)
@@ -110,8 +105,7 @@ namespace PIMPMyRepos
     {
       // Hide tray icon, otherwise it will remain shown until user mouses over it
       trayIcon.Visible = false;
-      doMainLoop = false;
-      mainThread.Join();
+      pullTimer.Stop();
       Application.Exit();
     }
   }
