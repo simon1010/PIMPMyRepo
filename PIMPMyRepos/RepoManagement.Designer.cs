@@ -39,7 +39,7 @@
       // 
       this.RepoPathTextBox.Location = new System.Drawing.Point(12, 12);
       this.RepoPathTextBox.Name = "RepoPathTextBox";
-      this.RepoPathTextBox.Size = new System.Drawing.Size(988, 20);
+      this.RepoPathTextBox.Size = new System.Drawing.Size(911, 20);
       this.RepoPathTextBox.TabIndex = 0;
       // 
       // AddButton
@@ -54,7 +54,7 @@
       // 
       // BrowseButton
       // 
-      this.BrowseButton.Location = new System.Drawing.Point(929, 74);
+      this.BrowseButton.Location = new System.Drawing.Point(929, 12);
       this.BrowseButton.Name = "BrowseButton";
       this.BrowseButton.Size = new System.Drawing.Size(75, 23);
       this.BrowseButton.TabIndex = 2;
@@ -72,7 +72,7 @@
       // 
       // RemoveButton
       // 
-      this.RemoveButton.Location = new System.Drawing.Point(929, 221);
+      this.RemoveButton.Location = new System.Drawing.Point(929, 74);
       this.RemoveButton.Name = "RemoveButton";
       this.RemoveButton.Size = new System.Drawing.Size(75, 23);
       this.RemoveButton.TabIndex = 4;

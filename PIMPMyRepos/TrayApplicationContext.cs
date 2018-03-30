@@ -9,6 +9,8 @@ namespace PIMPMyRepos
   {
     private NotifyIcon trayIcon;
     private System.Windows.Forms.Timer pullTimer;
+    private MercurialService mercurialService = MercurialService.Instance;
+    private Thread notificatinThread;
 
     public TrayApplicationContext()
     {
@@ -53,10 +55,8 @@ namespace PIMPMyRepos
       pullTimer.Start();
     }
 
-    void MainLoop(object sender, EventArgs e)
+    void ShowTrayNotification()
     {
-      UpdateTrayStatus();
-
       PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
 
       var notification = new System.Windows.Forms.NotifyIcon()
@@ -79,6 +79,26 @@ namespace PIMPMyRepos
       // The notification should be disposed when you don't need it anymore,
       // but doing so will immediately close the balloon if it's visible.
       notification.Dispose();
+    }
+
+    void MainLoop(object sender, EventArgs e)
+    {
+      UpdateTrayStatus();
+      PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
+
+      if(notificatinThread != null)
+      {
+        notificatinThread.Join();
+      }
+      notificatinThread = new Thread(ShowTrayNotification);
+
+      notificatinThread.Start();
+
+      foreach (var repo in settings.repoPaths)
+      {
+        // TODO: Test if the Workbench is open and active
+        mercurialService.pull(repo);
+      }
     }
 
     void ManageRepos(object sender, EventArgs e)

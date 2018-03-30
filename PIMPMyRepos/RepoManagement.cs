@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PIMPMyRepos
 {
   public partial class RepoManagement : Form
   {
+    MercurialService mercurialService = MercurialService.Instance;
+
     public RepoManagement(PIMPMyRepoSettings settings)
     {
       InitializeComponent();
@@ -26,7 +20,8 @@ namespace PIMPMyRepos
 
     private void AddButton_Click(object sender, EventArgs e)
     {
-      RepoListListbox.Items.Add(RepoPathTextBox.Text);
+      if(!string.IsNullOrWhiteSpace(RepoPathTextBox.Text))
+        RepoListListbox.Items.Add(RepoPathTextBox.Text);
     }
 
     private void BrowseButton_Click(object sender, EventArgs e)
@@ -34,10 +29,13 @@ namespace PIMPMyRepos
       using (var fbd = new FolderBrowserDialog())
       {
         DialogResult result = fbd.ShowDialog();
-
-        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+        var selectedPath = fbd.SelectedPath;
+        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(selectedPath))
         {
-          RepoPathTextBox.Text = fbd.SelectedPath;
+          if(mercurialService.isRepo(selectedPath))
+            RepoPathTextBox.Text = selectedPath;
+          else
+            MessageBox.Show("Folder in not a Mercurial repository! ", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
       }
     }
