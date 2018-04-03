@@ -1,2 +1,2 @@
 # PIMPMyRepo
-Tray application which will keep you repositories up to date
+Tray application which will keep your Mercurial repositories up to date.
