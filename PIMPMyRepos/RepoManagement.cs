@@ -6,16 +6,24 @@ namespace PIMPMyRepos
   public partial class RepoManagement : Form
   {
     MercurialService mercurialService = MercurialService.Instance;
+    private ErrorProvider errorProvider;
 
     public RepoManagement(PIMPMyRepoSettings settings)
     {
       InitializeComponent();
+      errorProvider = new ErrorProvider(this);
       RepoListListbox.Items.AddRange(settings.repoPaths.ToArray());
+      PullIntervalTextBox.Text = settings.pullInterval.ToString();
     }
 
     public ListBox.ObjectCollection GetListBoxItems()
     {
       return RepoListListbox.Items;
+    }
+
+    public int GetPullInterval()
+    {
+      return int.Parse(PullIntervalTextBox.Text);
     }
 
     private void AddButton_Click(object sender, EventArgs e)
@@ -44,6 +52,18 @@ namespace PIMPMyRepos
     {
       if(RepoListListbox.Items.Count > 0)
         RepoListListbox.Items.Remove(RepoListListbox.Items[RepoListListbox.SelectedIndex]);
+    }
+
+    private void PullIntervalTextBox_TextChanged(object sender, EventArgs e)
+    {
+      if (!int.TryParse(PullIntervalTextBox.Text, out int result))
+      {
+        errorProvider.SetError(PullIntervalTextBox, "must contain an integer value");
+      }
+      else
+      {
+        errorProvider.Clear();
+      }
     }
   }
 }

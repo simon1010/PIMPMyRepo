@@ -34,15 +34,16 @@ namespace PIMPMyRepos
 
     public void InitTimer()
     {
+      PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
       pullTimer = new System.Windows.Forms.Timer();
       pullTimer.Tick += new EventHandler(MainLoop);
-      pullTimer.Interval = Properties.Settings.Default.PullInterval * 1000; // in miliseconds
+      pullTimer.Interval = settings.pullInterval * 60 * 1000; // in miliseconds
     }
 
     void UpdateTrayStatus()
     {
       PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
-      trayIcon.Text = String.Format("Pull into {0} repos, every {1}s ", settings.repoCount.ToString(), Properties.Settings.Default.PullInterval);
+      trayIcon.Text = String.Format("Pull into {0} repos, every {1} minutes ", settings.repoCount.ToString(), settings.pullInterval);
     }
 
     void TestRepos()
@@ -108,6 +109,12 @@ namespace PIMPMyRepos
       var result = repoPathDialog.ShowDialog();
 
       settings.ResetSettings();
+
+      var pullInterval = repoPathDialog.GetPullInterval();
+      if (pullInterval != settings.pullInterval)
+      {
+        settings.pullInterval = pullInterval;
+      }
 
       var paths = repoPathDialog.GetListBoxItems();
       foreach (string path in paths)

@@ -8,6 +8,7 @@ namespace PIMPMyRepos
   {
     public int repoCount = 0;
     public List<string> repoPaths = new List<string>();
+    public int pullInterval = 10;
 
     public void ResetSettings()
     {
