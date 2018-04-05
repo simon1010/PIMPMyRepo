@@ -48,7 +48,6 @@
       this.RepoPathTextBox.Name = "RepoPathTextBox";
       this.RepoPathTextBox.Size = new System.Drawing.Size(911, 20);
       this.RepoPathTextBox.TabIndex = 0;
-      this.RepoPathTextBox.UseWaitCursor = true;
       // 
       // AddButton
       // 
@@ -58,7 +57,6 @@
       this.AddButton.TabIndex = 1;
       this.AddButton.Text = "Add";
       this.AddButton.UseVisualStyleBackColor = true;
-      this.AddButton.UseWaitCursor = true;
       this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
       // 
       // BrowseButton
@@ -69,7 +67,6 @@
       this.BrowseButton.TabIndex = 2;
       this.BrowseButton.Text = "Browse";
       this.BrowseButton.UseVisualStyleBackColor = true;
-      this.BrowseButton.UseWaitCursor = true;
       this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
       // 
       // RepoListListbox
@@ -79,7 +76,6 @@
       this.RepoListListbox.Name = "RepoListListbox";
       this.RepoListListbox.Size = new System.Drawing.Size(911, 199);
       this.RepoListListbox.TabIndex = 3;
-      this.RepoListListbox.UseWaitCursor = true;
       // 
       // RemoveButton
       // 
@@ -89,7 +85,6 @@
       this.RemoveButton.TabIndex = 4;
       this.RemoveButton.Text = "Remove";
       this.RemoveButton.UseVisualStyleBackColor = true;
-      this.RemoveButton.UseWaitCursor = true;
       this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
       // 
       // RepositoriesGroupBox
@@ -99,13 +94,13 @@
       this.RepositoriesGroupBox.Controls.Add(this.RepoPathTextBox);
       this.RepositoriesGroupBox.Controls.Add(this.BrowseButton);
       this.RepositoriesGroupBox.Controls.Add(this.AddButton);
+      this.RepositoriesGroupBox.Cursor = System.Windows.Forms.Cursors.Default;
       this.RepositoriesGroupBox.Location = new System.Drawing.Point(12, 83);
       this.RepositoriesGroupBox.Name = "RepositoriesGroupBox";
       this.RepositoriesGroupBox.Size = new System.Drawing.Size(1012, 264);
       this.RepositoriesGroupBox.TabIndex = 5;
       this.RepositoriesGroupBox.TabStop = false;
       this.RepositoriesGroupBox.Text = "Repositories";
-      this.RepositoriesGroupBox.UseWaitCursor = true;
       // 
       // SettingsGroupBox
       // 
