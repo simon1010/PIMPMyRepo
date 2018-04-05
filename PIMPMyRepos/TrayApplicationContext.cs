@@ -1,5 +1,6 @@
 ﻿using PIMPMyRepos.Properties;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -36,8 +37,17 @@ namespace PIMPMyRepos
     {
       PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
       pullTimer = new System.Windows.Forms.Timer();
-      pullTimer.Tick += new EventHandler(MainLoop);
+      pullTimer.Tick += new EventHandler(PullLoop);
       pullTimer.Interval = settings.pullInterval * 60 * 1000; // in miliseconds
+    }
+
+    void UpdateAndRestartTimer(PIMPMyRepoSettings settings)
+    {
+      Debug.Assert(pullTimer != null);
+
+      pullTimer.Stop();
+      pullTimer.Interval = settings.pullInterval * 60 * 1000;
+      pullTimer.Start();
     }
 
     void UpdateTrayStatus()
@@ -82,7 +92,7 @@ namespace PIMPMyRepos
       notification.Dispose();
     }
 
-    void MainLoop(object sender, EventArgs e)
+    void PullLoop(object sender, EventArgs e)
     {
       UpdateTrayStatus();
       PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
@@ -114,6 +124,7 @@ namespace PIMPMyRepos
       if (pullInterval != settings.pullInterval)
       {
         settings.pullInterval = pullInterval;
+        UpdateAndRestartTimer(settings);
       }
 
       var paths = repoPathDialog.GetListBoxItems();
@@ -132,6 +143,13 @@ namespace PIMPMyRepos
     {
       // Hide tray icon, otherwise it will remain shown until user mouses over it
       trayIcon.Visible = false;
+      
+      // In case someone decides to close tha application whilst the baloon pop-up is being shown
+      if (notificatinThread != null)
+      {
+        notificatinThread.Join();
+      }
+
       pullTimer.Stop();
       Application.Exit();
     }
