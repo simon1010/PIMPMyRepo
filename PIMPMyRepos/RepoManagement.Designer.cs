@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RepoManagement));
       this.RepoPathTextBox = new System.Windows.Forms.TextBox();
       this.AddButton = new System.Windows.Forms.Button();
       this.BrowseButton = new System.Windows.Forms.Button();
@@ -147,6 +148,8 @@
       this.ClientSize = new System.Drawing.Size(1036, 358);
       this.Controls.Add(this.SettingsGroupBox);
       this.Controls.Add(this.RepositoriesGroupBox);
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "RepoManagement";
       this.Text = "RepoManagement";
       this.RepositoriesGroupBox.ResumeLayout(false);

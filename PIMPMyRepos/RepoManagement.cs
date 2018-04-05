@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PIMPMyRepos.Properties;
+using System;
 using System.Windows.Forms;
 
 namespace PIMPMyRepos
@@ -11,7 +12,17 @@ namespace PIMPMyRepos
     public RepoManagement(PIMPMyRepoSettings settings)
     {
       InitializeComponent();
+      // set our icon
+      Icon = Resources.AppIcon;
+
+      // Disallow resize
+      MaximizeBox = false;
+      MinimizeBox = false;
+
+      // Field validation
       errorProvider = new ErrorProvider(this);
+
+      // Init from stored settings
       RepoListListbox.Items.AddRange(settings.repoPaths.ToArray());
       PullIntervalTextBox.Text = settings.pullInterval.ToString();
     }
@@ -30,6 +41,7 @@ namespace PIMPMyRepos
     {
       if(!string.IsNullOrWhiteSpace(RepoPathTextBox.Text))
         RepoListListbox.Items.Add(RepoPathTextBox.Text);
+      RepoPathTextBox.Text = "";
     }
 
     private void BrowseButton_Click(object sender, EventArgs e)
