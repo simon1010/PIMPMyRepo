@@ -69,15 +69,5 @@ namespace PIMPMyRepos.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon database {
-            get {
-                object obj = ResourceManager.GetObject("database", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
     }
 }

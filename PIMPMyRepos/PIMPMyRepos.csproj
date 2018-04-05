@@ -87,19 +87,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ApplicationIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ApplicationIcont.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\data_backup.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\database.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\database.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
