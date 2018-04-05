@@ -70,26 +70,12 @@ namespace PIMPMyRepos
     {
       PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
 
-      var notification = new System.Windows.Forms.NotifyIcon()
-      {
-        Visible = true,
-        Icon = System.Drawing.SystemIcons.Information,
-        BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info,
-        BalloonTipTitle = "Pulling into repos",
-        BalloonTipText = String.Format("Nr of repos being pulled into: {0}", settings.repoCount.ToString()),
-      };
+      trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+      trayIcon.BalloonTipTitle = "Pulling into repos";
+      trayIcon.BalloonTipText = String.Format("Nr of repos being pulled into: {0}", settings.repoCount.ToString());
 
       // Display for 5 seconds.
-      notification.ShowBalloonTip(5000);
-
-      // This will let the balloon close after it's 5 second timeout
-      // for demonstration purposes. Comment this out to see what happens
-      // when dispose is called while a balloon is still visible.
-      Thread.Sleep(6000);
-
-      // The notification should be disposed when you don't need it anymore,
-      // but doing so will immediately close the balloon if it's visible.
-      notification.Dispose();
+      trayIcon.ShowBalloonTip(5000);
     }
 
     void PullLoop(object sender, EventArgs e)
