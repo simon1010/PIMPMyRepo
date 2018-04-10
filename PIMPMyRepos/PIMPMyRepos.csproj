@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\data_backup.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Mercurial.Net" Version="1.1.1.607" />
     <Reference Include="System" />
