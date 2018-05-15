@@ -1,6 +1,7 @@
 ﻿using PIMPMyRepos.Properties;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -78,6 +79,26 @@ namespace PIMPMyRepos
       trayIcon.ShowBalloonTip(5000);
     }
 
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+
+    public void WaitForHGWorkbenchToLoseFocus()
+    {
+      while (true)
+      {
+        Process[] p = Process.GetProcessesByName("thgw");
+        if (p.Length > 0)
+        {
+          if (!p[0].MainWindowHandle.Equals(GetForegroundWindow()))
+          {
+            break;
+          }
+        }
+        Thread.Sleep(5000);
+      }
+    }
+
     void PullLoop(object sender, EventArgs e)
     {
       UpdateTrayStatus();
@@ -87,15 +108,19 @@ namespace PIMPMyRepos
       {
         notificatinThread.Join();
       }
+
+      WaitForHGWorkbenchToLoseFocus();
+      pullTimer.Stop();
+
       notificatinThread = new Thread(ShowTrayNotification);
-
       notificatinThread.Start();
-
+      
       foreach (var repo in settings.repoPaths)
       {
-        // TODO: Test if the Workbench is open and active
         mercurialService.pull(repo);
       }
+
+      pullTimer.Start();
     }
 
     void ManageRepos(object sender, EventArgs e)

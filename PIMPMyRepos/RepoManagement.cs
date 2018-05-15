@@ -77,5 +77,10 @@ namespace PIMPMyRepos
         errorProvider.Clear();
       }
     }
+
+    private void RepoListListbox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      //string selectedPath = RepoListListbox.
+    }
   }
 }

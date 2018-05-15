@@ -77,6 +77,7 @@
       this.RepoListListbox.Name = "RepoListListbox";
       this.RepoListListbox.Size = new System.Drawing.Size(911, 199);
       this.RepoListListbox.TabIndex = 3;
+      this.RepoListListbox.SelectedIndexChanged += new System.EventHandler(this.RepoListListbox_SelectedIndexChanged);
       // 
       // RemoveButton
       // 
