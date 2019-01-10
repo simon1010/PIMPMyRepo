@@ -28,7 +28,9 @@ namespace PIMPMyRepos
     public void pull(string repoPath)
     {
       Repository repo = new Repository(repoPath);
-      repo.Pull();
+      PullCommand pullCommand = new PullCommand();
+      pullCommand.Timeout = 60 * 10; // 10 minutes
+      repo.Pull(pullCommand);
     }
   }
 }
