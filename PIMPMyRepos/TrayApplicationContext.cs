@@ -14,6 +14,8 @@ namespace PIMPMyRepos
     private MercurialService mercurialService = MercurialService.Instance;
     private Thread notificatinThread;
 
+    private bool managementDialogOpen = false;
+
     public TrayApplicationContext()
     {
       // Initialize Tray Icon
@@ -125,29 +127,39 @@ namespace PIMPMyRepos
 
     void ManageRepos(object sender, EventArgs e)
     {
-      PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
-      RepoManagement repoPathDialog = new RepoManagement(settings);
-      var result = repoPathDialog.ShowDialog();
-
-      settings.ResetSettings();
-
-      var pullInterval = repoPathDialog.GetPullInterval();
-      if (pullInterval != settings.pullInterval)
+      if (!managementDialogOpen)
       {
-        settings.pullInterval = pullInterval;
-        UpdateAndRestartTimer(settings);
-      }
+        managementDialogOpen = true;
+        PIMPMyRepoSettings settings = PIMPMyRepoSettings.Load();
+        RepoManagement repoPathDialog = new RepoManagement(settings);
+        repoPathDialog.Disposed += RepoPathDialog_Disposed;
+        var result = repoPathDialog.ShowDialog();
 
-      var paths = repoPathDialog.GetListBoxItems();
-      foreach (string path in paths)
-      {
-        settings.repoPaths.Add(path);
-        settings.repoCount++;
-      }
+        settings.ResetSettings();
 
-      settings.Save();
-      repoPathDialog.Dispose();
-      UpdateTrayStatus();
+        var pullInterval = repoPathDialog.GetPullInterval();
+        if (pullInterval != settings.pullInterval)
+        {
+          settings.pullInterval = pullInterval;
+          UpdateAndRestartTimer(settings);
+        }
+
+        var paths = repoPathDialog.GetListBoxItems();
+        foreach (string path in paths)
+        {
+          settings.repoPaths.Add(path);
+          settings.repoCount++;
+        }
+
+        settings.Save();
+        repoPathDialog.Dispose();
+        UpdateTrayStatus();
+      }
+    }
+
+    private void RepoPathDialog_Disposed(object sender, EventArgs e)
+    {
+      managementDialogOpen = false;
     }
 
     void Exit(object sender, EventArgs e)
